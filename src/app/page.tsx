@@ -11,74 +11,67 @@ type InfoItem = {
   contentLink?: string;
 };
 
-export default function Home() {
-  const currentYear = new Date().getFullYear();
+type IgData = {
+  data: { id: string }[];
+};
 
+type PhotoData = {
+  id: number;
+  media_url: string;
+  permalink: string;
+};
+
+export default async function Home() {
+  const igId = process.env.IG_ID;
+  const igAccessToken = process.env.IG_ACCESS_TOKEN;
+  const mediaRes = await fetch(
+    `https://graph.instagram.com/v21.0/${igId}/media?access_token=${igAccessToken}`
+  );
+  const mediaResJson: IgData = await mediaRes.json();
+  console.log(mediaResJson);
+  const index = Math.floor(Math.random() * mediaResJson.data.length);
+  const data = mediaResJson.data[index];
+  const igMediaId = data.id;
+  const photoRes = await fetch(
+    `https://graph.instagram.com/v21.0/${igMediaId}?fields=permalink,media_url,caption&access_token=${igAccessToken}`
+  );
+  const photoResJson: PhotoData = await photoRes.json();
+  const { permalink, media_url: mediaUrl } = photoResJson;
+
+  const currentYear = new Date().getFullYear();
   const infoList: InfoItem[] = [
     {
-      title: "Blog",
-      content: "https://midare.utakana.de",
-      contentLink: "https://midare.utakana.de",
-    },
-    {
-      title: "X / Twitter",
-      content: "https://x.com/kitayoshi_son",
-      contentLink: "https://x.com/kitayoshi_son",
+      title: "Owner",
+      content: "https://kitayo.si/",
+      contentLink: "https://kitayo.si/",
     },
     {
       title: "Instagram",
-      content: "https://www.instagram.com/kitayoshi.son",
-      contentLink: "https://www.instagram.com/kitayoshi.son",
-    },
-    {
-      title: "YouTube",
-      content: "https://www.youtube.com/@kitayoshi_son",
-      contentLink: "https://www.youtube.com/@kitayoshi_son",
-    },
-    {
-      title: "哔哩哔哩 / Bilibili",
-      content: "https://space.bilibili.com/281272",
-      contentLink: "https://space.bilibili.com/281272",
-    },
-    {
-      title: "知乎 / Zhihu",
-      content: "https://www.zhihu.com/people/kitayoshi",
-      contentLink: "https://www.zhihu.com/people/kitayoshi",
-    },
-    {
-      title: "小红书 / RED",
-      content: "Kitayoshi",
-      contentLink:
-        "https://www.xiaohongshu.com/user/profile/5f5a50820000000001001213",
-    },
-    {
-      title: "LinkedIn",
-      content: "https://www.linkedin.com/in/kitayoshi-son",
-      contentLink: "https://www.linkedin.com/in/kitayoshi-son",
-    },
-    {
-      title: "Strava",
-      content: "https://www.strava.com/athletes/60457398",
-      contentLink: "https://www.strava.com/athletes/60457398",
-    },
-    {
-      title: "email (# -> @)",
-      content: "midare#utakana.de",
+      content: "https://www.instagram.com/cereal.cat",
+      contentLink: "https://www.instagram.com/cereal.cat",
     },
   ];
+
+  const description =
+    "A decent white cat.\nBorn 2021.4🐱🐈‍⬛\nLoves to hunt and play";
 
   return (
     <div className={styles.page}>
       <main className={styles.main}>
         <div className={styles.slide}>
-          <ArtBox title="Kitayoshi" description="Piano Amateur">
+          <ArtBox
+            title="Cereal / 麦片"
+            description={description}
+            cardLink={"https://www.instagram.com/cereal.cat"}
+            link={permalink}
+          >
             <FrameBox>
               <Image
-                className={styles.logo}
-                src="/avatar.jpg"
-                alt="Kitayoshi's avatar"
-                width={200}
-                height={200}
+                className={styles.image}
+                src={mediaUrl}
+                alt="Cereal's picture"
+                width={1440}
+                height={1440}
                 priority
               />
             </FrameBox>

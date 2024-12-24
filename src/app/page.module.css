@@ -13,6 +13,13 @@
   width: 100vw;
 }
 
+.image {
+  height: calc(100vw - 128px);
+  width: calc(100vw - 128px);
+  max-height: 512px;
+  max-width: 512px;
+}
+
 .infoList {
   background: #fff;
   box-shadow: 0 2px 6px 0 rgba(0, 0, 0, 0.2);
