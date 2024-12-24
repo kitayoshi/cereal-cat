@@ -1,7 +1,8 @@
 .container {
   align-items: flex-end;
   display: flex;
-  flex-direction: column;
+  position: relative;
+  gap: 24px;
 }
 
 .card {
@@ -9,8 +10,23 @@
   box-shadow: 0 2px 6px 0 rgba(0, 0, 0, 0.2);
   display: flex;
   flex-direction: column;
-  margin-top: 24px;
   padding: 8px;
+}
+
+.card {
+  bottom: 0;
+  right: -24px;
+  position: absolute;
+  transform: translateX(100%);
+  max-width: 160px;
+}
+
+@media (max-width: 936px) {
+  .card {
+    bottom: -24px;
+    right: 0;
+    transform: translateY(100%);
+  }
 }
 
 .title {
