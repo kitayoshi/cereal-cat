@@ -16,28 +16,47 @@ type IgData = {
 };
 
 type PhotoData = {
+  caption: string;
   id: number;
   media_url: string;
   permalink: string;
+  timestamp: string;
 };
 
 export const dynamic = "force-dynamic";
 
-export default async function Home() {
+type SearchParams = Promise<{ [key: string]: string | string[] | undefined }>;
+type HomeProps = {
+  searchParams: SearchParams;
+};
+
+export default async function Home(props: HomeProps) {
+  const { searchParams } = props;
+  const mediaId = (await searchParams).mediaId;
+
   const igId = process.env.IG_ID;
   const igAccessToken = process.env.IG_ACCESS_TOKEN;
-  const mediaRes = await fetch(
-    `https://graph.instagram.com/v21.0/${igId}/media?access_token=${igAccessToken}`
+
+  let igMediaId = mediaId ? mediaId.toString() : null;
+  if (!igMediaId) {
+    const mediaRes = await fetch(
+      `https://graph.instagram.com/v21.0/${igId}/media?access_token=${igAccessToken}`
+    );
+    const mediaResJson: IgData = await mediaRes.json();
+    const index = Math.floor(Math.random() * mediaResJson.data.length);
+    const data = mediaResJson.data[index];
+    igMediaId = data.id;
+  }
+  const mediaFields = ["caption", "permalink", "media_url", "timestamp"].join(
+    ","
   );
-  const mediaResJson: IgData = await mediaRes.json();
-  const index = Math.floor(Math.random() * mediaResJson.data.length);
-  const data = mediaResJson.data[index];
-  const igMediaId = data.id;
   const photoRes = await fetch(
-    `https://graph.instagram.com/v21.0/${igMediaId}?fields=permalink,media_url,caption&access_token=${igAccessToken}`
+    `https://graph.instagram.com/v21.0/${igMediaId}?fields=${mediaFields}&access_token=${igAccessToken}`
   );
   const photoResJson: PhotoData = await photoRes.json();
-  const { permalink, media_url: mediaUrl } = photoResJson;
+  const { caption, permalink, media_url: mediaUrl, timestamp } = photoResJson;
+
+  const mediaDate = new Date(timestamp);
 
   const currentYear = new Date().getFullYear();
   const infoList: InfoItem[] = [
@@ -67,15 +86,17 @@ export default async function Home() {
         <div className={styles.slide}>
           <ArtBox
             title="Cereal / 麦片"
+            caption={caption}
             description={description}
-            cardLink={"https://www.instagram.com/cereal.cat"}
             link={permalink}
+            date={mediaDate}
+            cardLink={"https://www.instagram.com/cereal.cat"}
           >
             <FrameBox>
               <Image
                 className={styles.image}
                 src={mediaUrl}
-                alt="Cereal's picture"
+                alt={caption || "Cereal Cat Picture"}
                 width={1440}
                 height={1440}
                 priority

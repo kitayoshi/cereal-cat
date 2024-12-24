@@ -24,3 +24,17 @@
   margin-top: 2px;
   white-space: pre-line;
 }
+
+.caption {
+  color: #333;
+  font-size: 12px;
+  margin-top: 24px;
+  font-weight: bold;
+  white-space: pre-line;
+}
+
+.date {
+  color: #666;
+  font-size: 12px;
+  margin-top: 2px;
+}
