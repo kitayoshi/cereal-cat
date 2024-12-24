@@ -1,6 +1,7 @@
 .container {
   align-items: flex-end;
   display: flex;
+  flex-direction: column;
   position: relative;
   gap: 24px;
 }
@@ -23,9 +24,10 @@
 
 @media (max-width: 936px) {
   .card {
-    bottom: -24px;
+    position: relative;
+    bottom: 0;
     right: 0;
-    transform: translateY(100%);
+    transform: none;
   }
 }
 
