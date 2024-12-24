@@ -21,6 +21,8 @@ type PhotoData = {
   permalink: string;
 };
 
+export const dynamic = "force-dynamic";
+
 export default async function Home() {
   const igId = process.env.IG_ID;
   const igAccessToken = process.env.IG_ACCESS_TOKEN;
@@ -28,7 +30,6 @@ export default async function Home() {
     `https://graph.instagram.com/v21.0/${igId}/media?access_token=${igAccessToken}`
   );
   const mediaResJson: IgData = await mediaRes.json();
-  console.log(mediaResJson);
   const index = Math.floor(Math.random() * mediaResJson.data.length);
   const data = mediaResJson.data[index];
   const igMediaId = data.id;
