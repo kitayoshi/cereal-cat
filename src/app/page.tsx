@@ -41,8 +41,13 @@ export default async function Home() {
   const currentYear = new Date().getFullYear();
   const infoList: InfoItem[] = [
     {
-      title: "Owner",
-      content: "https://kitayo.si/",
+      title: "Owner, primary",
+      content: "Haru343",
+      contentLink: "https://x.com/haru3433",
+    },
+    {
+      title: "Owner, secondary",
+      content: "Kitayoshi",
       contentLink: "https://kitayo.si/",
     },
     {

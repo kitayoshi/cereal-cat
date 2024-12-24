@@ -14,8 +14,8 @@ const geistMono = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "Kitayoshi SON",
-  description: "Kitayoshi SON Personal Web Page",
+  title: "Cereal",
+  description: "A Decent White Cat",
 };
 
 export default function RootLayout({
